@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('despesas', function (Blueprint $table) {
             $table->id();
             $table->text('descricao', 191);
-            $table->date('data_ocorrencia');
             $table->double('valor', 10, 2);
+            $table->date('data_ocorrencia');
 
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
