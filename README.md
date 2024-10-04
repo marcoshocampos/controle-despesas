@@ -84,7 +84,7 @@ Essa documentação descreve todas as rotas, parâmetros, métodos HTTP e as res
 
 Clone o repositório:
 ```bash
-    git clone https://github.com/marcoshocampos/onfly-teste
+    git clone git@github.com:marcoshocampos/onfly-teste.git
 ```
 
 ### Instale as dependências
