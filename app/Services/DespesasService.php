@@ -6,9 +6,11 @@ use App\Models\Despesa;
 
 class DespesasService
 {
-    public function getDespesas($userId)
+    public function getDespesas()
     {
-        return Despesa::where('id_user', $userId)->get();
+        $despesas = auth()->user()->despesas;
+
+        return $despesas;
     }
 
     public function createDespesa($data)
@@ -19,7 +21,7 @@ class DespesasService
             'descricao' => $data['descricao'],
             'valor' => $data['valor'],
             'data_ocorrencia' => $data['data_ocorrencia'],
-            'id_user' => $userId,
+            'user_id' => $userId,
         ]);
     }
 
@@ -32,7 +34,7 @@ class DespesasService
     {
         $despesa->update($data);
 
-        return $despesa;
+        return $despesa->update($data);
     }
 
     public function deleteDespesa(Despesa $despesa) 

@@ -15,7 +15,7 @@ class Despesa extends Model
         'descricao',
         'valor',
         'data_ocorrencia',
-        'id_user'
+        'user_id'
     ];
 
     // converte atributos para um tipo específico

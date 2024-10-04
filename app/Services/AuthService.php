@@ -10,11 +10,13 @@ class AuthService
 {
     public function register(array $data)
     {
-        return User::create([
+        $user = User::create([
             'nome' => $data['nome'],
             'email' => $data['email'],
             'senha' => Hash::make($data['senha']),
         ]);
+
+        return $user;
     }
 
     public function login(array $data): array

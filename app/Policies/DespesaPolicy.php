@@ -12,7 +12,7 @@ class DespesaPolicy
      */
     public function view(User $user, Despesa $despesa): bool
     {       
-        return $user->id === $despesa->id_user;
+        return $user->id === $despesa->user_id;
     }
     
     /**
@@ -28,7 +28,7 @@ class DespesaPolicy
      */
     public function update(User $user, Despesa $despesa): bool
     {
-        return $user->id === $despesa->id_user;
+        return $user->id === $despesa->user_id;
     }
 
     /**
@@ -36,6 +36,6 @@ class DespesaPolicy
      */
     public function delete(User $user, Despesa $despesa): bool
     {
-        return $user->id === $despesa->id_user;
+        return $user->id === $despesa->user_id;
     }
 }

@@ -1,0 +1,465 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API de Despesas",
+        "description": "Documentação da API de Despesas utilizando Swagger OpenAPI",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Autenticação"
+                ],
+                "summary": "Registrar novo usuário",
+                "description": "Registra um novo usuário na aplicação",
+                "operationId": "8a56853624e025573120a09a4c75d468",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nome": {
+                                        "description": "Nome completo do usuário",
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "description": "Endereço de e-mail do usuário",
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "johndoe@example.com"
+                                    },
+                                    "senha": {
+                                        "description": "Senha do usuário",
+                                        "type": "string",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Registro bem-sucedido",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResource"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro de validação"
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Autenticação"
+                ],
+                "summary": "Login do usuário",
+                "description": "Realiza login do usuário e retorna o token de acesso",
+                "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "description": "O endereço de e-mail do usuário",
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "johndoe@example.com"
+                                    },
+                                    "senha": {
+                                        "description": "A senha do usuário",
+                                        "type": "string",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Login bem-sucedido",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "$ref": "#/components/schemas/UserResource"
+                                        },
+                                        "access_token": {
+                                            "type": "string",
+                                            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "Bearer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Credenciais inválidas"
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Autenticação"
+                ],
+                "summary": "Logout do usuário",
+                "description": "Realiza o logout do usuário e revoga o token de acesso",
+                "operationId": "fe8f3429cd6979b3b4517e186505f9f9",
+                "responses": {
+                    "201": {
+                        "description": "Logout bem-sucedido"
+                    },
+                    "401": {
+                        "description": "Não autorizado"
+                    }
+                }
+            }
+        },
+        "/api/despesas": {
+            "get": {
+                "tags": [
+                    "Despesas"
+                ],
+                "summary": "Listar todas as despesas",
+                "description": "Retorna a lista de despesas",
+                "operationId": "817769817638cea9fd8e032fca0441b2",
+                "responses": {
+                    "201": {
+                        "description": "Successo"
+                    },
+                    "401": {
+                        "description": "Não autorizado"
+                    }
+                }
+            }
+        },
+        "/api/despesas/{id}": {
+            "get": {
+                "tags": [
+                    "Despesas"
+                ],
+                "summary": "Exibir uma despesa específica",
+                "description": "Retorna os dados de uma despesa específica",
+                "operationId": "ba5f6572d6e2edcfbc3fde5c2d1bf499",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da despesa",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DespesaResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Despesa não encontrada"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Despesas"
+                ],
+                "summary": "Atualizar uma despesa",
+                "description": "Atualiza uma despesa existente",
+                "operationId": "097f34474d125d4699a039881d6e2b78",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da despesa",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "descricao": {
+                                        "description": "Descrição da despesa",
+                                        "type": "string",
+                                        "example": "Compra de material de escritório"
+                                    },
+                                    "valor": {
+                                        "description": "Valor da despesa",
+                                        "type": "number",
+                                        "example": 200
+                                    },
+                                    "data_ocorrencia": {
+                                        "description": "Data da ocorrência da despesa",
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2024-10-03"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Despesa atualizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DespesaResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Despesa não encontrada"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Despesas"
+                ],
+                "summary": "Deletar uma despesa",
+                "description": "Remove uma despesa",
+                "operationId": "ccb2f297038cb6b29b599c3a63e96992",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID da despesa",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Deleted successfully."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Despesa não encontrada"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "StoreDespesaRequest": {
+                "title": "Requisição para criar uma nova despesa",
+                "description": "Corpo da requisição para criar uma nova despesa",
+                "required": [
+                    "descricao",
+                    "valor",
+                    "data_ocorrencia"
+                ],
+                "properties": {
+                    "descricao": {
+                        "description": "Descrição da despesa",
+                        "type": "string",
+                        "example": "Compra de material de escritório"
+                    },
+                    "valor": {
+                        "description": "Valor da despesa",
+                        "type": "number",
+                        "example": 150
+                    },
+                    "data_ocorrencia": {
+                        "description": "Data da ocorrência da despesa",
+                        "type": "string",
+                        "format": "date",
+                        "example": "2024-10-03"
+                    }
+                },
+                "type": "object"
+            },
+            "SuccessResponse": {
+                "title": "Resposta de Sucesso",
+                "description": "Formato padrão para respostas de sucesso",
+                "properties": {
+                    "success": {
+                        "description": "Indica se a operação foi bem-sucedida",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "message": {
+                        "description": "Mensagem descritiva do sucesso",
+                        "type": "string",
+                        "example": "Operation completed successfully."
+                    },
+                    "data": {
+                        "description": "Os dados retornados pela operação",
+                        "type": "object",
+                        "example": {
+                            "id": 1,
+                            "name": "John Doe"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "ErrorResponse": {
+                "title": "Resposta de Erro",
+                "description": "Formato padrão para respostas de erro",
+                "properties": {
+                    "success": {
+                        "description": "Indica que a operação falhou",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "message": {
+                        "description": "Mensagem descritiva do erro",
+                        "type": "string",
+                        "example": "An error occurred."
+                    },
+                    "error": {
+                        "description": "Detalhe do erro",
+                        "type": "string",
+                        "example": "Invalid credentials"
+                    },
+                    "line": {
+                        "description": "Linha onde ocorreu o erro (opcional)",
+                        "type": "integer",
+                        "example": 45
+                    }
+                },
+                "type": "object"
+            },
+            "DespesaResource": {
+                "title": "Despesa",
+                "description": "Formato de resposta para a entidade Despesa",
+                "properties": {
+                    "id": {
+                        "description": "ID da despesa",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "descricao": {
+                        "description": "Descrição da despesa",
+                        "type": "string",
+                        "example": "Compra de material de escritório"
+                    },
+                    "valor": {
+                        "description": "Valor da despesa",
+                        "type": "number",
+                        "example": 150
+                    },
+                    "data_ocorrencia": {
+                        "description": "Data em que ocorreu a despesa",
+                        "type": "string",
+                        "format": "date",
+                        "example": "2024-10-03"
+                    },
+                    "created_at": {
+                        "description": "Data em que a despesa foi criada",
+                        "type": "string",
+                        "format": "date",
+                        "example": "2024-10-01"
+                    },
+                    "updated_at": {
+                        "description": "Data em que a despesa foi atualizada",
+                        "type": "string",
+                        "format": "date",
+                        "example": "2024-10-02"
+                    }
+                },
+                "type": "object"
+            },
+            "UserResource": {
+                "properties": {
+                    "id": {
+                        "description": "ID do usuário",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "description": "Nome do usuário",
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "description": "Email do usuário",
+                        "type": "string",
+                        "format": "email",
+                        "example": "john.doe@example.com"
+                    },
+                    "created_at": {
+                        "description": "Data de criação do usuário",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-10-02T12:00:00Z"
+                    },
+                    "updated_at": {
+                        "description": "Data da última atualização do usuário",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-10-02T12:00:00Z"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Autenticação",
+            "description": "Autenticação"
+        },
+        {
+            "name": "Despesas",
+            "description": "Despesas"
+        }
+    ]
+}

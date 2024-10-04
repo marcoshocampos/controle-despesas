@@ -18,10 +18,12 @@ class DespesaFactory extends Factory
     public function definition(): array
     {
         return [
-            'descricao' => $this->faker->paragraph(),
+            'descricao' => $this->faker->sentence(),
             'data_ocorrencia' => now(),
             'valor' => $this->faker->randomNumber(2),
-            'id_user' => User::pluck('id')->random(),
+            'user_id' => User::pluck('id')->random(),
+            'created_at' => now(),
+            'updated_at' => now()
         ];
     }
 }
