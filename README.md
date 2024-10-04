@@ -1,66 +1,134 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Projeto de API - Gerenciamento de Despesas
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este projeto é uma API desenvolvida em **Laravel** para gerenciamento de despesas, permitindo aos usuários autenticados criar, ler, atualizar e excluir despesas. A API implementa autenticação, políticas de acesso, notificações e validação de dados.
 
-## About Laravel
+## Funcionalidades
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Autenticação de Usuário**: Acesso protegido ao CRUD de despesas utilizando autenticação via tokens.
+- **CRUD de Despesas**: Operações de criação, leitura, atualização e exclusão da entidade "Despesa".
+- **Restrição de Acesso**: Apenas o usuário vinculado à despesa pode acessá-la ou modificá-la.
+- **Notificação**: O usuário é notificado via e-mail ao cadastrar uma nova despesa.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Estrutura da Entidade "Despesa"
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Id**: Identificador único da despesa.
+- **Descrição**: Detalhamento da despesa (até 191 caracteres).
+- **Data**: Data em que a despesa ocorreu (não pode ser uma data futura).
+- **Valor**: Valor da despesa (não pode ser negativo).
+- **Usuário**: Relacionamento com o usuário dono da despesa.
 
-## Learning Laravel
+## Requisitos de Validação
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- Verificar se o usuário existe.
+- Impedir cadastro de despesas com datas futuras.
+- Garantir que o valor da despesa não seja negativo.
+- Limitar a descrição da despesa a 191 caracteres.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Endpoints
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 1. **Listar Despesas**
+- **Método**: `GET /api/despesas`
+- **Descrição**: Retorna todas as despesas associadas ao usuário autenticado.
 
-## Laravel Sponsors
+### 2. **Criar Despesa**
+- **Método:** `POST /api/despesas`
+- **Descrição**: Cria uma nova despesa vinculada ao usuário autenticado.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 3. **Exibir Despesa**
 
-### Premium Partners
+- **Método:** `GET /api/despesas/{id}`
+- **Descrição:** Retorna os detalhes de uma despesa específica.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+**Parâmetro:**
+- **id** (identificador da despesa).
 
-## Contributing
+### 4. **Atualizar Despesa**
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- **Método:** `PUT /api/despesas/{id}`
+- **Descrição**: Atualiza uma despesa vinculada ao usuário autenticado.
 
-## Code of Conduct
+**Parâmetro:**
+- **id** (identificador da despesa).
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 5. **Excluir Despesa**
 
-## Security Vulnerabilities
+- **Método:** `DELETE /api/despesas/{id}`
+- **Descrição:** Deleta uma despesa associada ao usuário autenticado.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+**Parâmetro:**
+- **id** (identificador da despesa).
 
-## License
+### 6. **Registro de Usuário**
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- **Método:** `POST /api/register`
+- **Descrição:** Criar novo usuário.
+
+### 7. **Login**
+
+- **Método:** `POST /api/login`
+- **Descrição:** Autentica o usuário credenciado corretamente.
+
+### 8. **Logout**
+
+- **Método:** `POST /api/logout`
+- **Descrição:** Autentica o usuário credenciado corretamente.
+
+
+A documentação da API foi gerada utilizando a ferramenta Swagger e está disponível para consulta no seguinte endpoint:
+  ```bash
+    /api/doc
+  ```
+Essa documentação descreve todas as rotas, parâmetros, métodos HTTP e as respostas esperadas para as APIs do sistema. Ela é essencial para auxiliar no desenvolvimento e integração com o sistema, garantindo que os desenvolvedores entendam claramente o funcionamento da API.
+
+## Instalação e Configuração
+
+Clone o repositório:
+```bash
+    git clone https://github.com/marcoshocampos/onfly-teste
+```
+
+### Instale as dependências
+
+1. No diretório do projeto, execute o seguinte comando para instalar as dependências do projeto:
+  ```bash
+    composer install
+  ```
+
+2. Configure o arquivo .env para incluir as credenciais de banco de dados, configurações de e-mail e outras variáveis necessárias para o funcionamento correto da aplicação. Pode usar o comando abaixo para utilizar o .env.example como referência:
+  ```bash
+    cp .env.example .env
+  ```
+
+3. Inicie a aplicação:
+  ```bash
+    php artisan serve
+  ```
+
+4. Para configurar o banco de dados, execute as migrações utilizando o comando abaixo
+  ```bash
+    php artisan migrate
+  ```
+
+5. Caso queira popular o banco com alguns exemplos, pode rodar o comando abaixo para utilizar os seeders
+  ```bash
+    php artisan db:seed
+  ```
+
+6. Para processar as notificações de email que forem adicionadas a fila, execute o seguinte comando:
+  ```bash
+    php artisan queue:work
+  ```
+Para testar o envio dos emails em ambiente de desenvolvimento, foi utilizado o [Mailtrap](https://mailtrap.io)
+
+## Testes Unitários
+
+Os testes unitários foram implementados para garantir a qualidade e o correto funcionamento das seguintes funcionalidades:
+
+- **Autenticação de Usuário**: Verifica a autenticação correta e os fluxos de login/logout.
+- **Operações de CRUD de Despesas**: Valida as operações de criação, leitura, atualização e exclusão de despesas no sistema.
+- **Restrições de Acesso com Policies**: Garante que apenas usuários autorizados possam acessar ou modificar determinados recursos, de acordo com as regras de Policies definidas.
+
+Para executar os testes unitários e validar o comportamento do sistema, utilize o seguinte comando:
+  ```bash
+    php artisan test
+  ```

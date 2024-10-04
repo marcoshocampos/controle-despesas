@@ -27,13 +27,10 @@ class DespesasServiceTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        // Cria despesas associadas ao usuário logado
         Despesa::factory()->count(3)->create(['user_id' => $user->id]);
 
-        // Chama o método getDespesas do service
         $despesas = $this->despesasService->getDespesas();
 
-        // Verifica se o retorno contém 3 despesas
         $this->assertCount(3, $despesas);
     }
 
@@ -49,10 +46,8 @@ class DespesasServiceTest extends TestCase
             'data_ocorrencia' => '2024-10-03',
         ];
 
-        // Chama o método createDespesa
         $despesa = $this->despesasService->createDespesa($data);
 
-        // Verifica se a despesa foi criada corretamente
         $this->assertInstanceOf(Despesa::class, $despesa);
         $this->assertDatabaseHas('despesas', [
             'descricao' => 'Compra de materiais',
@@ -70,20 +65,17 @@ class DespesasServiceTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        // Cria uma despesa
         $despesa = Despesa::factory()->create([
             'user_id' => $user->id
         ]);
 
-        // Chama o método findDespesa
         $foundDespesa = $this->despesasService->findDespesa($despesa->id);
 
-        // Verifica se a despesa encontrada é a correta
         $this->assertEquals($despesa->id, $foundDespesa->id);
     }
 
     /** @test */
-    public function updates_despesa()
+    public function updates_despesa_service()
     {
         $this->withoutExceptionHandling();
 
@@ -100,12 +92,12 @@ class DespesasServiceTest extends TestCase
             'valor' => 300.00,
             'data_ocorrencia' => '2024-10-04',
         ];
-
-        // Chama o método updateDespesa
+    
         $updatedDespesa = $this->despesasService->updateDespesa($despesa, $data);
-
-        // Verifica se a despesa foi atualizada
-        $this->assertTrue($updatedDespesa);
+    
+        // verifica se a instância retornada é do tipo Despesa
+        $this->assertInstanceOf(Despesa::class, $updatedDespesa);
+    
         $this->assertDatabaseHas('despesas', [
             'id' => $despesa->id,
             'descricao' => 'Despesa atualizada',
@@ -122,15 +114,13 @@ class DespesasServiceTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        // Cria uma despesa
         $despesa = Despesa::factory()->create([
             'user_id' => $user->id
         ]);
 
-        // Chama o método deleteDespesa
         $result = $this->despesasService->deleteDespesa($despesa);
 
-        // Verifica se a despesa foi deletada
+        // verifica se a despesa foi deletada
         $this->assertTrue($result);
         $this->assertDatabaseMissing('despesas', [
             'id' => $despesa->id,

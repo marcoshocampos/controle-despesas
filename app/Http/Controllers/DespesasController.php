@@ -55,30 +55,91 @@ class DespesasController extends Controller
     }
 
     /**
-     * @OA\Schema(
-     *     schema="StoreDespesaRequest",
-     *     type="object",
-     *     title="Requisição para criar uma nova despesa",
-     *     description="Corpo da requisição para criar uma nova despesa",
-     *     required={"descricao", "valor", "data_ocorrencia"},
-     *     @OA\Property(
-     *         property="descricao",
-     *         type="string",
-     *         description="Descrição da despesa",
-     *         example="Compra de material de escritório"
+     * @OA\Post(
+     *     path="/api/despesas",
+     *     summary="Criar uma nova despesa",
+     *     tags={"Despesas"},
+     *     description="Endpoint para criar uma nova despesa",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             required={"descricao", "valor", "data_ocorrencia"},
+     *             @OA\Property(
+     *                 property="descricao",
+     *                 type="string",
+     *                 description="Descrição da despesa",
+     *                 example="Compra de material de escritório"
+     *             ),
+     *             @OA\Property(
+     *                 property="valor",
+     *                 type="number",
+     *                 format="float",
+     *                 description="Valor da despesa",
+     *                 example=150.00
+     *             ),
+     *             @OA\Property(
+     *                 property="data_ocorrencia",
+     *                 type="string",
+     *                 format="date",
+     *                 description="Data da ocorrência da despesa",
+     *                 example="2024-10-03"
+     *             )
+     *         )
      *     ),
-     *     @OA\Property(
-     *         property="valor",
-     *         type="number",
-     *         description="Valor da despesa",
-     *         example=150.00
+     *     @OA\Response(
+     *         response=201,
+     *         description="Despesa criada com sucesso",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="id",
+     *                 type="integer",
+     *                 description="ID da despesa",
+     *                 example=1
+     *             ),
+     *             @OA\Property(
+     *                 property="descricao",
+     *                 type="string",
+     *                 description="Descrição da despesa",
+     *                 example="Compra de material de escritório"
+     *             ),
+     *             @OA\Property(
+     *                 property="valor",
+     *                 type="number",
+     *                 description="Valor da despesa",
+     *                 example=150.00
+     *             ),
+     *             @OA\Property(
+     *                 property="data_ocorrencia",
+     *                 type="string",
+     *                 format="date",
+     *                 description="Data da ocorrência da despesa",
+     *                 example="2024-10-03"
+     *             ),
+     *             @OA\Property(
+     *                 property="created_at",
+     *                 type="string",
+     *                 format="date-time",
+     *                 description="Data de criação da despesa",
+     *                 example="2024-10-01T12:00:00Z"
+     *             ),
+     *             @OA\Property(
+     *                 property="updated_at",
+     *                 type="string",
+     *                 format="date-time",
+     *                 description="Data de atualização da despesa",
+     *                 example="2024-10-02T12:00:00Z"
+     *             )
+     *         )
      *     ),
-     *     @OA\Property(
-     *         property="data_ocorrencia",
-     *         type="string",
-     *         format="date",
-     *         description="Data da ocorrência da despesa",
-     *         example="2024-10-03"
+     *     @OA\Response(
+     *         response=400,
+     *         description="Erro de validação"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Não autorizado"
      *     )
      * )
      */
@@ -233,7 +294,7 @@ class DespesasController extends Controller
      *     )
      * )
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
         try {
             $despesa = $this->despesasService->findDespesa($id);

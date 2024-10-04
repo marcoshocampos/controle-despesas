@@ -11,6 +11,8 @@ class UserResource extends JsonResource
      * @OA\Schema(
      *     schema="UserResource",
      *     type="object",
+     *     title="UserResource",
+     *     description="Formato de resposta para User",
      *     @OA\Property(
      *         property="id",
      *         type="integer",

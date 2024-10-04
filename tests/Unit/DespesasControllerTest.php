@@ -40,19 +40,32 @@ class DespesasControllerTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $this->mock(DespesasService::class, function ($mock) {
-            $mock->shouldReceive('createDespesa')
-                ->once()
-                ->andReturn(Despesa::factory()->make());
-        });
-        
-        $response = $this->postJson('/api/despesas', [
+        $requestData = [
             'descricao' => 'Nova Despesa',
             'valor' => 150.00,
             'data_ocorrencia' => now()->format('Y-m-d'),
-        ]);
+        ];
+
+        $this->mock(DespesasService::class, function ($mock) use ($requestData) {
+            $mock->shouldReceive('createDespesa')
+                ->once()
+                ->andReturn(Despesa::factory()->create(array_merge($requestData, [
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ])));
+        });
+
+        $response = $this->postJson('/api/despesas', $requestData);
 
         $response->assertStatus(201);
+
+        $response->assertJson([
+            'data' => [
+                'descricao' => 'Nova Despesa',
+                'valor' => 150.00,
+                'data_ocorrencia' => now()->format('Y-m-d'),
+            ],
+        ]);
     }
 
     /** @test */
@@ -63,31 +76,77 @@ class DespesasControllerTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $this->mock(DespesasService::class, function ($mock) {
+        $despesaData = [
+            'id' => 1,
+            'descricao' => 'Teste de Despesa',
+            'valor' => 150.00,
+            'data_ocorrencia' => now()->format('Y-m-d'),
+            'user_id' => $user->id,
+            'created_at' => now()->toDateString(),
+            'updated_at' => now()->toDateString(),
+        ];
+
+        $this->mock(DespesasService::class, function ($mock) use ($despesaData) {
             $mock->shouldReceive('findDespesa')
                 ->once()
-                ->andReturn(Despesa::factory()->make());
+                ->andReturn(Despesa::factory()->make($despesaData));
         });
 
         $response = $this->getJson('/api/despesas/1');
 
         $response->assertStatus(200);
+
+        $response->assertJson([
+            'data' => [
+                'id' => 1,
+                'descricao' => 'Teste de Despesa',
+                'valor' => 150.00,
+                'data_ocorrencia' => now()->format('Y-m-d'),
+                'created_at' => now()->toDateString(),
+                'updated_at' => now()->toDateString(),
+            ],
+        ]);
     }
 
     /** @test */
     public function updates_despesa()
     {
+        $this->withoutExceptionHandling();
+
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $this->mock(DespesasService::class, function ($mock) {
+        $despesaOriginal = [
+            'id' => 1,
+            'descricao' => 'Despesa Original',
+            'valor' => 100.00,
+            'data_ocorrencia' => '2024-10-02',
+            'user_id' => $user->id,
+            'created_at' => now()->toDateString(),
+            'updated_at' => now()->toDateString(),
+        ];
+
+        // Mock dos dados atualizados da despesa
+        $despesaAtualizada = [
+            'id' => 1,
+            'descricao' => 'Despesa Atualizada',
+            'valor' => 200.00,
+            'data_ocorrencia' => '2024-10-03',
+            'user_id' => $user->id,
+            'created_at' => now()->toDateString(),
+            'updated_at' => now()->toDateString(),
+        ];
+
+        $this->mock(DespesasService::class, function ($mock) use ($despesaOriginal, $despesaAtualizada) {
+            // quando encontrar a despesa, retorna os dados originais
             $mock->shouldReceive('findDespesa')
                 ->once()
-                ->andReturn(Despesa::factory()->make());
+                ->andReturn(Despesa::factory()->make($despesaOriginal));
 
+            // quando atualizar a despesa, retorna os dados atualizados
             $mock->shouldReceive('updateDespesa')
                 ->once()
-                ->andReturn(Despesa::factory()->make());
+                ->andReturn(Despesa::factory()->make($despesaAtualizada));
         });
 
         $response = $this->putJson('/api/despesas/1', [
@@ -97,6 +156,17 @@ class DespesasControllerTest extends TestCase
         ]);
 
         $response->assertStatus(200);
+
+        $response->assertJson([
+            'data' => [
+                'id' => 1,
+                'descricao' => 'Despesa Atualizada',
+                'valor' => 200.00,
+                'data_ocorrencia' => '2024-10-03',
+                'created_at' => now()->toDateString(),
+                'updated_at' => now()->toDateString(),
+            ],
+        ]);
     }
 
     public function deletes_despesa()

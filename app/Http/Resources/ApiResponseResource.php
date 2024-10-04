@@ -11,7 +11,7 @@ class ApiResponseResource extends JsonResource
      * @OA\Schema(
      *     schema="SuccessResponse",
      *     type="object",
-     *     title="Resposta de Sucesso",
+     *     title="ApiResponseResource - Sucesso",
      *     description="Formato padrão para respostas de sucesso",
      *     @OA\Property(
      *         property="success",
@@ -49,7 +49,7 @@ class ApiResponseResource extends JsonResource
      * @OA\Schema(
      *     schema="ErrorResponse",
      *     type="object",
-     *     title="Resposta de Erro",
+     *     title="ApiResponseResource - Erro",
      *     description="Formato padrão para respostas de erro",
      *     @OA\Property(
      *         property="success",

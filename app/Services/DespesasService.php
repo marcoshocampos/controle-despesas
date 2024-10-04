@@ -33,11 +33,12 @@ class DespesasService
     public function updateDespesa(Despesa $despesa, $data)
     {
         $despesa->update($data);
-
-        return $despesa->update($data);
+        
+        // retorna a instância atualizada
+        return $despesa->fresh();
     }
 
-    public function deleteDespesa(Despesa $despesa) 
+    public function deleteDespesa(Despesa $despesa)
     {
         $despesa->delete();
 

@@ -12,7 +12,7 @@ class DespesaResource extends JsonResource
      * @OA\Schema(
      *     schema="DespesaResource",
      *     type="object",
-     *     title="Despesa",
+     *     title="DespesaResource",
      *     description="Formato de resposta para a entidade Despesa",
      *     @OA\Property(
      *         property="id",

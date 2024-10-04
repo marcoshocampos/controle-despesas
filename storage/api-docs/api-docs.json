@@ -154,6 +154,101 @@
                         "description": "Não autorizado"
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "Despesas"
+                ],
+                "summary": "Criar uma nova despesa",
+                "description": "Endpoint para criar uma nova despesa",
+                "operationId": "104fd5a474d69b494574628268bc4dbf",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "descricao",
+                                    "valor",
+                                    "data_ocorrencia"
+                                ],
+                                "properties": {
+                                    "descricao": {
+                                        "description": "Descrição da despesa",
+                                        "type": "string",
+                                        "example": "Compra de material de escritório"
+                                    },
+                                    "valor": {
+                                        "description": "Valor da despesa",
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 150
+                                    },
+                                    "data_ocorrencia": {
+                                        "description": "Data da ocorrência da despesa",
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2024-10-03"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Despesa criada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID da despesa",
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "descricao": {
+                                            "description": "Descrição da despesa",
+                                            "type": "string",
+                                            "example": "Compra de material de escritório"
+                                        },
+                                        "valor": {
+                                            "description": "Valor da despesa",
+                                            "type": "number",
+                                            "example": 150
+                                        },
+                                        "data_ocorrencia": {
+                                            "description": "Data da ocorrência da despesa",
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2024-10-03"
+                                        },
+                                        "created_at": {
+                                            "description": "Data de criação da despesa",
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-10-01T12:00:00Z"
+                                        },
+                                        "updated_at": {
+                                            "description": "Data de atualização da despesa",
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2024-10-02T12:00:00Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro de validação"
+                    },
+                    "401": {
+                        "description": "Não autorizado"
+                    }
+                }
             }
         },
         "/api/despesas/{id}": {
@@ -297,36 +392,8 @@
     },
     "components": {
         "schemas": {
-            "StoreDespesaRequest": {
-                "title": "Requisição para criar uma nova despesa",
-                "description": "Corpo da requisição para criar uma nova despesa",
-                "required": [
-                    "descricao",
-                    "valor",
-                    "data_ocorrencia"
-                ],
-                "properties": {
-                    "descricao": {
-                        "description": "Descrição da despesa",
-                        "type": "string",
-                        "example": "Compra de material de escritório"
-                    },
-                    "valor": {
-                        "description": "Valor da despesa",
-                        "type": "number",
-                        "example": 150
-                    },
-                    "data_ocorrencia": {
-                        "description": "Data da ocorrência da despesa",
-                        "type": "string",
-                        "format": "date",
-                        "example": "2024-10-03"
-                    }
-                },
-                "type": "object"
-            },
             "SuccessResponse": {
-                "title": "Resposta de Sucesso",
+                "title": "ApiResponseResource - Sucesso",
                 "description": "Formato padrão para respostas de sucesso",
                 "properties": {
                     "success": {
@@ -351,7 +418,7 @@
                 "type": "object"
             },
             "ErrorResponse": {
-                "title": "Resposta de Erro",
+                "title": "ApiResponseResource - Erro",
                 "description": "Formato padrão para respostas de erro",
                 "properties": {
                     "success": {
@@ -378,7 +445,7 @@
                 "type": "object"
             },
             "DespesaResource": {
-                "title": "Despesa",
+                "title": "DespesaResource",
                 "description": "Formato de resposta para a entidade Despesa",
                 "properties": {
                     "id": {
@@ -418,6 +485,8 @@
                 "type": "object"
             },
             "UserResource": {
+                "title": "UserResource",
+                "description": "Formato de resposta para User",
                 "properties": {
                     "id": {
                         "description": "ID do usuário",
